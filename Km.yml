@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kmapp
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kmapp
+  template:
+    metadata:
+      name: kmapp
+      labels:
+        app: kmapp
+    spec:
+      containers:
+        - name: kmappcontainer
+          image: lokeshb3/kmimage
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kmapp
+  labels:
+    app: kmapp
+spec:
+  selector:
+    app: kmapp
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
